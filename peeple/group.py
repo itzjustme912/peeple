@@ -22,14 +22,14 @@ class Group:
         member_names = []
         for i in range(len(self._members)):
             member = self._members[i]
-            member.append(member_names)
+            member_names.append(member.get_full_name())
         return member_names
 
     def get_admin_names(self) -> list[str]:
         admin_names = []
         for i in range(len(self._admins)):
             admin = self._admins[i]
-            admin.append(admin_names)
+            admin_names.append(admin.get_full_name())
         return admin_names
 
     def set_name(self, group_name):
@@ -58,16 +58,13 @@ class Group:
 
     def remove_member(self, removed_member: Account):
         for curr_member in self._members:
-        #     name = curr_member.get_full_name()
-        #     removed_name = removed_member.get_full_name()
-        #     if removed_name == name:
-        #         self._members.remove(removed_member)
-        #         return True
-            if removed_member == self._admins[curr_member]:
-                member_index = curr_member
-        self._members.remove(self._members[member_index])
-        return True
-            
+            name = curr_member.get_full_name()
+            removed_name = removed_member.get_full_name()
+            if removed_name == name:
+                self._members.remove(removed_member)
+                return True
+        return False
+
     def add_admin(self, new_admin: Account):
         for curr_admin in self._admins:
             admin = curr_admin.get_full_name()
@@ -76,15 +73,12 @@ class Group:
                 return False
         self._admins.append(new_admin)
         return True
-    
+
     def remove_admin(self, removed_admin: Account):
-        for curr_admin in range(len(self._admins)):
-            # admin = curr_admin.get_full_name()
-            # removed_ad = removed_admin.get_full_name()
-            # if removed_ad == admin:
-            #     self._admins.remove(removed_admin)
-            #     return True
-            if removed_admin == self._admins[curr_admin]:
-                admin_index = curr_admin
-        self._admins.remove(self._admins[admin_index])
-        return True
+        for curr_admin in self._admins:
+            admin = curr_admin.get_full_name()
+            removed_ad = removed_admin.get_full_name()
+            if removed_ad == admin:
+                self._admins.remove(removed_admin)
+                return True
+        return False
