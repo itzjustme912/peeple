@@ -1,18 +1,15 @@
 from peeple.account import Account
 import pandas as pd
 
-# write a function that takes a pandas dataframe as input and returns a list of accounts
-
-# pass in  a variable which has been assaigned to a dataframe in a function which takes
-# in the dataframe and somehow loops through it to create individual accounts and store
-# them in a list which is a list of objects and returns the list
-
 
 def df_to_list(data_frame):
     account_list = []
     for index, row in data_frame.iterrows():
         curr_account = Account(
-            row["Full Name"], row["Gender"], row["Username"], row["Password"]
+            str(row["Full Name"]),
+            str(row["Gender"]),
+            str(row["Username"]),
+            str(row["Password"]),
         )
         account_list.append(curr_account)
     return account_list
@@ -27,6 +24,18 @@ def list_to_df(list_acc):
         curr_element.append(account.get_username())
         curr_element.append(account.get_password())
         df_list.append(curr_element)
-    df = pd.DataFrame(df_list, columns=["Full Name", "Gender", "Username", "Password"])
+    df = pd.DataFrame(df_list, columns=["FullName", "Gender", "Username", "Password"])
     return df
 
+
+def load_chats(user_1, user_2):
+    user_accs = [user_1, user_2]
+    user_accs.sort()
+    file_name = f"{user_accs[0]}_{user_accs[1]}.csv"
+    try:
+        df_existing = pd.read_csv(f"./user_chats/{user_accs[0]}_{user_accs[1]}.csv")
+        print("Previous chats found.")
+    except:
+        df_existing = pd.DataFrame(columns=["Timestamp", "Name", "Message"])
+        print("Previous chats not found, new chat has been created.")
+    return file_name, df_existing
